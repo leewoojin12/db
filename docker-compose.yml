@@ -1,0 +1,22 @@
+version: "3.3"
+services:
+
+  edulink:
+    image: leewoojin12/edulink:1.1
+    environment:
+      MARIADB_DATABASE: ${MARIADB_DATABASE}
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+    volumes:
+      - ./db/master/data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+  edulink_slave:
+    image: leewoojin12/edulink:1.1
+    environment:
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+    volumes:
+      - ./db/slave/data:/var/lib/mysql
+    ports:
+      - "3307:3306"
+    depends_on:
+      - edulink
